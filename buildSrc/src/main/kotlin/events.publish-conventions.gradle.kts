@@ -12,6 +12,11 @@ plugins {
 val snapshotRepository: String by project
 val releaseRepository: String by project
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 configure<PublishingExtension> {
     repositories {
         maven {
