@@ -8,4 +8,6 @@ pluginManagement {
 }
 include("api")
 include("bukkit")
-include("plugin")
+include("bukkit-plugin")
+include("velocity-plugin")
+include("velocity")
