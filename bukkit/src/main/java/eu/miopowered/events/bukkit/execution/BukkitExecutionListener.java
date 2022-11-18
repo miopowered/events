@@ -13,14 +13,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
-public class BukkitExecutionListener<E extends Event> implements EventExecutor, Listener, ExecutionListener {
+public class BukkitExecutionListener<E extends Event>
+    implements EventExecutor, Listener, ExecutionListener {
 
   private final SimpleExecutionTarget<E> executionTarget;
   private final EventPriority eventPriority;
   private final AtomicBoolean active = new AtomicBoolean(true);
 
   @Override
-  public void execute(@NotNull Listener listener, @NotNull Event event) throws EventException {
+  public void execute(@NotNull Listener listener, @NotNull Event event)
+      throws EventException {
     if (!this.executionTarget.eventClass().equals(event.getClass())) {
       return;
     }
@@ -31,19 +33,26 @@ public class BukkitExecutionListener<E extends Event> implements EventExecutor, 
 
     E eventInstance = this.executionTarget.eventClass().cast(event);
 
-    if (this.executionTarget.expirations().stream()
-        .anyMatch(expiration -> expiration.test(eventInstance))) {
+    if (
+        this.executionTarget.expirations()
+            .stream()
+            .anyMatch(expiration -> expiration.test(eventInstance))
+    ) {
       event.getHandlers().unregister(listener);
       this.active.set(false);
       return;
     }
 
     try {
-      if (!this.executionTarget.filters().stream()
-          .allMatch(predicate -> predicate.test(eventInstance))) {
+      if (
+          !this.executionTarget.filters()
+              .stream()
+              .allMatch(predicate -> predicate.test(eventInstance))
+      ) {
         return;
       }
-      this.executionTarget.handlers().forEach(consumer -> consumer.accept(eventInstance));
+      this.executionTarget.handlers()
+          .forEach(consumer -> consumer.accept(eventInstance));
     } catch (Throwable throwable) {
       this.executionTarget.exceptionConsumer().accept(eventInstance, throwable);
     }
@@ -55,18 +64,24 @@ public class BukkitExecutionListener<E extends Event> implements EventExecutor, 
       return;
     }
 
-    BukkitReflections.unregisterListener(this.executionTarget.eventClass(), this);
+    BukkitReflections.unregisterListener(
+        this.executionTarget.eventClass(),
+        this
+    );
   }
 
   @Override
   public void register(JavaPlugin javaPlugin) {
-    javaPlugin.getServer().getPluginManager().registerEvent(
-        this.executionTarget.eventClass(),
-        this,
-        this.eventPriority,
-        this,
-        javaPlugin,
-        false
-    );
+    javaPlugin
+        .getServer()
+        .getPluginManager()
+        .registerEvent(
+            this.executionTarget.eventClass(),
+            this,
+            this.eventPriority,
+            this,
+            javaPlugin,
+            false
+        );
   }
 }

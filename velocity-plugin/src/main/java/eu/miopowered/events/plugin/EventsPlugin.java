@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 @Plugin(id = "events")
 public class EventsPlugin {
 
-
   private final ProxyServer server;
   private final Logger logger;
 
@@ -24,14 +23,21 @@ public class EventsPlugin {
     this.logger = logger;
 
     this.logger.info(
-        "Everyone gets help from someone else at some point in their lives. So someday, you should help someone too.");
+        "Everyone gets help from someone else at some point in their lives. So someday, you should help someone too."
+    );
     Events.create(this, this.server);
   }
 
   @Subscribe
   public void onProxyInitialization(ProxyInitializeEvent event) {
-    Events.listen(LoginEvent.class)
-        .handleAndRegister(loginEvent -> loginEvent.setResult(ComponentResult.denied(
-            Component.text("You are not allowed to join this server."))));
+    Events
+        .listen(LoginEvent.class)
+        .handleAndRegister(loginEvent ->
+            loginEvent.setResult(
+                ComponentResult.denied(
+                    Component.text("You are not allowed to join this server.")
+                )
+            )
+        );
   }
 }

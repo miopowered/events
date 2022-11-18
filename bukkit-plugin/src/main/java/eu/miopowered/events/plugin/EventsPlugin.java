@@ -24,44 +24,69 @@ public class EventsPlugin extends JavaPlugin {
   public void onEnable() {
     Events.create(this);
 
-    Events.listen(PlayerJoinEvent.class)
+    Events
+        .listen(PlayerJoinEvent.class)
         .handleAndRegister(event -> event.getPlayer().sendMessage("Hello!"));
 
-    Events.listen(BlockBreakEvent.class)
+    Events
+        .listen(BlockBreakEvent.class)
         .filter(EventFilters.ignoreCancelled())
         .filter(event -> event.getBlock().getType().equals(Material.GRASS_BLOCK))
-        .filter(event -> event.getPlayer().getGameMode().equals(GameMode.SURVIVAL))
+        .filter(event -> event.getPlayer().getGameMode().equals(GameMode.SURVIVAL)
+        )
         .handle(EventHandlers.cancel())
-        .handle(event -> event.getPlayer().sendMessage("You can't break grass in survival mode!"))
+        .handle(event ->
+            event.getPlayer().sendMessage("You can't break grass in survival mode!")
+        )
         .register();
 
-    Events.listen(PlayerMoveEvent.class)
+    Events
+        .listen(PlayerMoveEvent.class)
         .filter(EventFilters.ignoreCancelled())
         .filter(EventFilters.ignoreSameBlockMovement())
         .filter(EventFilters.withPlayerNot(Player::isSneaking))
         .handleAndRegister(EventHandlers.cancel());
 
-    Events.listen(PlayerGameModeChangeEvent.class)
+    Events
+        .listen(PlayerGameModeChangeEvent.class)
         .filter(EventFilters.playerHasPermissionNot("eventsplugin.gamemode"))
         .handle(EventHandlers.cancel());
 
-    Events.merge(Player.class)
+    Events
+        .merge(Player.class)
         .bind(PlayerJoinEvent.class, PlayerEvent::getPlayer)
-        .bind(PlayerGameModeChangeEvent.class, PlayerGameModeChangeEvent::getPlayer)
-        .bind(InventoryClickEvent.class,
-            entityJumpEvent -> (Player) entityJumpEvent.getWhoClicked())
+        .bind(
+            PlayerGameModeChangeEvent.class,
+            PlayerGameModeChangeEvent::getPlayer
+        )
+        .bind(
+            InventoryClickEvent.class,
+            entityJumpEvent -> (Player) entityJumpEvent.getWhoClicked()
+        )
         .handleAndRegister(player -> player.sendMessage("What are you doing?"));
 
-    Events.merge(PlayerEvent.class, PlayerToggleSneakEvent.class, PlayerJumpEvent.class)
-        .handleAndRegister(event -> event.getPlayer().sendMessage("You're sneaking or jumping!"));
+    Events
+        .merge(
+            PlayerEvent.class,
+            PlayerToggleSneakEvent.class,
+            PlayerJumpEvent.class
+        )
+        .handleAndRegister(event ->
+            event.getPlayer().sendMessage("You're sneaking or jumping!")
+        );
 
-    RegisteredListener listener = Events.listen(PlayerJoinEvent.class)
-        .handle(event -> event.getPlayer().sendMessage("You shouldn't see this message!"))
+    RegisteredListener listener = Events
+        .listen(PlayerJoinEvent.class)
+        .handle(event ->
+            event.getPlayer().sendMessage("You shouldn't see this message!")
+        )
         .register();
 
     Bukkit.getScheduler().runTaskLater(this, listener::unregister, 20 * 10);
 
-    this.getLogger().info(
-        "The most important thing when fighting and running away is to defend. It is not about beating the enemy in front of them, but to retreat while buying time for their comrades to retreat.");
+    this.getLogger()
+        .info(
+            "The most important thing when fighting and running away is to defend. It is not about beating the enemy in front of them, but to retreat while buying time for their comrades to retreat."
+        );
   }
 }

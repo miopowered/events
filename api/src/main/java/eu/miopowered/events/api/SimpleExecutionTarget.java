@@ -8,7 +8,8 @@ import java.util.function.Predicate;
 import lombok.Getter;
 
 @Getter
-public abstract class SimpleExecutionTarget<E> implements ExecutionTarget<E>, RegisteredListener {
+public abstract class SimpleExecutionTarget<E>
+    implements ExecutionTarget<E>, RegisteredListener {
 
   private final Class<E> eventClass;
   private final List<Predicate<E>> filters, expirations;
@@ -20,9 +21,10 @@ public abstract class SimpleExecutionTarget<E> implements ExecutionTarget<E>, Re
     this.filters = new ArrayList<>();
     this.expirations = new ArrayList<>();
     this.handlers = new ArrayList<>();
-    this.exceptionConsumer = (e, throwable) -> {
-      throw new RuntimeException(throwable);
-    };
+    this.exceptionConsumer =
+        (e, throwable) -> {
+          throw new RuntimeException(throwable);
+        };
   }
 
   @Override

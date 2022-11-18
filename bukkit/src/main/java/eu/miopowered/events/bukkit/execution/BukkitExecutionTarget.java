@@ -6,13 +6,16 @@ import eu.miopowered.events.bukkit.Events;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 
-public class BukkitExecutionTarget<E extends Event> extends SimpleExecutionTarget<E> {
+public class BukkitExecutionTarget<E extends Event>
+    extends SimpleExecutionTarget<E> {
 
   private final BukkitExecutionListener<E> listener;
 
-  public BukkitExecutionTarget(Class<E> eventClass, EventPriority eventPriority) {
+  public BukkitExecutionTarget(
+      Class<E> eventClass,
+      EventPriority eventPriority
+  ) {
     super(eventClass);
-
     this.listener = new BukkitExecutionListener<>(this, eventPriority);
   }
 

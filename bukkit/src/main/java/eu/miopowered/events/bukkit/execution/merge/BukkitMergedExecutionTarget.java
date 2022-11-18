@@ -16,15 +16,19 @@ public class BukkitMergedExecutionTarget<E> extends SimpleExecutionTarget<E> {
   private final BukkitMergedExecutionListener<E> listener;
   private final Map<Class<? extends Event>, MergedMapping> mappers;
 
-  public BukkitMergedExecutionTarget(Class<E> eventClass, EventPriority priority) {
+  public BukkitMergedExecutionTarget(
+      Class<E> eventClass,
+      EventPriority priority
+  ) {
     super(eventClass);
-
     this.listener = new BukkitMergedExecutionListener<>(this, priority);
     this.mappers = new HashMap<>();
   }
 
-  public <T extends Event> BukkitMergedExecutionTarget<E> bind(Class<T> eventClass,
-      Function<T, E> function) {
+  public <T extends Event> BukkitMergedExecutionTarget<E> bind(
+      Class<T> eventClass,
+      Function<T, E> function
+  ) {
     this.mappers.put(eventClass, new MergedMapping<>(function));
     return this;
   }

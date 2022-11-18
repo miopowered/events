@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public interface ExecutionTarget<E> {
-
   ExecutionTarget<E> expireIf(Predicate<E> predicate);
 
   default ExecutionTarget<E> expireAfter(long duration, TimeUnit timeUnit) {

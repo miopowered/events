@@ -18,16 +18,16 @@ public class Events {
   }
 
   public static <E> ExecutionTarget<E> listen(
-      Class<E> eventClass, PostOrder order) {
+      Class<E> eventClass,
+      PostOrder order
+  ) {
     return new VelocityExecutionTarget<>(eventClass, order);
   }
 
-  public static <E> ExecutionTarget<E> listen(
-      Class<E> eventClass) {
+  public static <E> ExecutionTarget<E> listen(Class<E> eventClass) {
     return listen(eventClass, PostOrder.NORMAL);
   }
 
   private final Object plugin;
   private final ProxyServer proxyServer;
-
 }

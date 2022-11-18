@@ -13,14 +13,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
-public class BukkitMergedExecutionListener<E> implements EventExecutor, Listener, ExecutionListener {
+public class BukkitMergedExecutionListener<E>
+    implements EventExecutor, Listener, ExecutionListener {
 
   private final BukkitMergedExecutionTarget<E> target;
   private final EventPriority eventPriority;
   private final AtomicBoolean active = new AtomicBoolean(true);
 
   @Override
-  public void execute(@NotNull Listener listener, @NotNull Event event) throws EventException {
+  public void execute(@NotNull Listener listener, @NotNull Event event)
+      throws EventException {
     if (!this.target.mappers().containsKey(event.getClass())) {
       return;
     }
@@ -29,18 +31,25 @@ public class BukkitMergedExecutionListener<E> implements EventExecutor, Listener
       return;
     }
 
-    MergedMapping<? super Event, E> wrapper = this.target.mappers().get(event.getClass());
+    MergedMapping<? super Event, E> wrapper =
+        this.target.mappers().get(event.getClass());
     E instance = wrapper.function().apply(event);
-    if (this.target.expirations().stream()
-        .anyMatch(expiration -> expiration.test(instance))) {
+    if (
+        this.target.expirations()
+            .stream()
+            .anyMatch(expiration -> expiration.test(instance))
+    ) {
       event.getHandlers().unregister(listener);
       this.active.set(false);
       return;
     }
 
     try {
-      if (!this.target.filters().stream()
-          .allMatch(predicate -> predicate.test(instance))) {
+      if (
+          !this.target.filters()
+              .stream()
+              .allMatch(predicate -> predicate.test(instance))
+      ) {
         return;
       }
       this.target.handlers().forEach(consumer -> consumer.accept(instance));
@@ -55,21 +64,27 @@ public class BukkitMergedExecutionListener<E> implements EventExecutor, Listener
       return;
     }
 
-    this.target.mappers().keySet()
+    this.target.mappers()
+        .keySet()
         .forEach(aClass -> BukkitReflections.unregisterListener(aClass, this));
   }
 
   @Override
   public void register(JavaPlugin javaPlugin) {
-    this.target.mappers().keySet().forEach(aClass -> {
-      javaPlugin.getServer().getPluginManager().registerEvent(
-          aClass,
-          this,
-          this.eventPriority,
-          this,
-          javaPlugin,
-          false
-      );
-    });
+    this.target.mappers()
+        .keySet()
+        .forEach(aClass -> {
+          javaPlugin
+              .getServer()
+              .getPluginManager()
+              .registerEvent(
+                  aClass,
+                  this,
+                  this.eventPriority,
+                  this,
+                  javaPlugin,
+                  false
+              );
+        });
   }
 }
