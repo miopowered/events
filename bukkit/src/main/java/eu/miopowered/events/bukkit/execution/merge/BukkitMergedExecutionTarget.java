@@ -3,8 +3,8 @@ package eu.miopowered.events.bukkit.execution.merge;
 import eu.miopowered.events.api.RegisteredListener;
 import eu.miopowered.events.api.SimpleExecutionTarget;
 import eu.miopowered.events.bukkit.Events;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import lombok.Getter;
 import org.bukkit.event.Event;
@@ -22,7 +22,7 @@ public class BukkitMergedExecutionTarget<E> extends SimpleExecutionTarget<E> {
   ) {
     super(eventClass);
     this.listener = new BukkitMergedExecutionListener<>(this, priority);
-    this.mappers = new HashMap<>();
+    this.mappers = new ConcurrentHashMap<>();
   }
 
   public <T extends Event> BukkitMergedExecutionTarget<E> bind(
