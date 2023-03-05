@@ -1,13 +1,13 @@
 rootProject.name = "events"
 
+enableFeaturePreview("VERSION_CATALOGS")
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.papermc.io/repository/maven-public/")
     }
 }
 include("api")
 include("bukkit")
-include("bukkit-plugin")
-include("velocity-plugin")
 include("velocity")
+include("example")

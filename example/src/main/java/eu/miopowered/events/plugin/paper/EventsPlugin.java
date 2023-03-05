@@ -1,4 +1,4 @@
-package eu.miopowered.events.plugin;
+package eu.miopowered.events.plugin.paper;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import eu.miopowered.events.api.RegisteredListener;

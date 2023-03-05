@@ -3,6 +3,8 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 plugins {
     `java-library`
+    id("com.github.johnrengelman.shadow")
+    id("io.freefair.lombok")
 }
 
 repositories {
@@ -20,5 +22,20 @@ configure<JavaPluginExtension> {
 tasks {
     compileJava {
         options.compilerArgs.add("-parameters")
+    }
+
+    shadowJar {
+        mergeServiceFiles()
+        archiveClassifier.set("")
+        manifest {
+            attributes(
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version,
+            )
+        }
+    }
+
+    build {
+        dependsOn(shadowJar)
     }
 }

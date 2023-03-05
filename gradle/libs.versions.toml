@@ -1,0 +1,13 @@
+[versions]
+velocity = "3.1.1"
+runtask = "2.0.0"
+minecraft = "1.19.2"
+
+[libraries]
+paper = { module = "io.papermc.paper:paper-api", version = "1.19.2-R0.1-SNAPSHOT" }
+velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
+
+[plugins]
+runpaper = { id = "xyz.jpenilla.run-paper", version.ref = "runtask" }
+runvelocity = { id = "xyz.jpenilla.run-velocity", version.ref = "runtask" }
+bukkityml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.5.2" }

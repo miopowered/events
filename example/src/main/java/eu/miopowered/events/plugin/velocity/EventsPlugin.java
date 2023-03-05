@@ -1,4 +1,4 @@
-package eu.miopowered.events.plugin;
+package eu.miopowered.events.plugin.velocity;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.ResultedEvent.ComponentResult;
